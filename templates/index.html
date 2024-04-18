@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--引入jQuery包用于使用ajax-->
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- <title>Experimental web interface</title> -->
+    <title>實驗用網頁</title>
+    <!-- w3 的樣式 -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- icon 圖的 CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- google fonts 字型套用連結 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- 防止 error : GET http://127.0.0.1:5502/favicon.ico 404 (Not Found) 
+        FROM: favicon.ico:1 -->
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+    <div class="title ">
+        <!-- <h1>Interface for controlling the direction of playback speakers</h1> -->
+        <h1>聽聲辨位實驗用介面</h1>
+    </div>
+    <div class="content">
+        <div class="contentUp">
+            <div class="leftSide">
+                <div class="button_btConnect">
+                    <div class="w3-padding w3-large">
+                        <i class="fa-brands fa-bluetooth"></i>
+                        藍芽喇叭
+                    </div>
+                    <label class="switch">
+                        <input type="checkbox" id="scanAudio">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+                <div class="button_hertz">
+                    <div class="w3-large w3-text-black">
+                        <div class="button w3-padding" id="hertz500">500Hz</div>
+                        <div class="button w3-padding" id="hertz2000">2000Hz</div>
+                    </div>
+                </div>
+
+                <div class="button_directions">
+                    <div class="w3-large w3-text-black">
+                        <i class="button_direction fa-solid fa-arrow-up" id="upSpeaker"></i><br>
+                        <i class="button_direction fa-solid fa-arrow-left" id="leftSpeaker"></i>
+                        <i class="button_direction fa-solid fa-arrow-down" id="downSpeaker"></i>
+                        <i class="button_direction fa-solid fa-arrow-right" id="rightSpeaker"></i>
+                    </div>
+                </div>
+
+                <div class="button_random">
+                    <div class="w3-large w3-text-black">
+                        <!-- <div class="button w3-padding" id="playRandomVideo">PLAY</div>
+                        <div class="button w3-padding" id="pauseVideo">PAUSE</div> -->
+                        <div class="button w3-padding" id="playRandomVideo">隨機播放</div>
+                        <div class="button w3-padding" id="pauseVideo">停止</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="middle">
+                <div>
+                    <!-- <p class="p_status">Playing status :</p> -->
+                    <p class="p_status">聲音播放紀錄：</p>
+                    <div class="output">
+                        <!-- <div id="content" style="color: red;">Please connect Bluetooth First!!</div>
+                        <div id="status">Select Frequency</div> -->
+                        <div id="content" style="color: red; font-weight: bold;">請先連接藍芽裝置！</div>
+                        <div id="status">＜ 選擇聲音的頻率</div>
+                        <!-- pre: 文本空格与换行符都有效 -->
+                        <pre id="log"></pre>
+                    </div>
+                    <!-- <button class="button" id="cleanLog">Clean</button> -->
+                    <button class="button" id="cleanLog">清除</button>
+                    <!-- <button class="button" id="saveLog">儲存</button> -->
+                </div>
+            </div>
+
+            <div class="rightSide">
+                <div class="contentVid">
+                    <!-- <p>當前音量：
+                        <span id="vol">1.0</span>
+                    </p>
+                    <div class="btnVol">
+                        <button class="button btnVol" onclick="setFullVolume()" type="button">音量 1.0</button>
+                        <button class="button btnVol" onclick="setQuartersVolume()" type="button">音量 0.75</button>
+                        <button class="button btnVol" onclick="setHalfVolume()" type="button">音量 0.5</button>
+                        <button class="button btnVol" onclick="setQuarterVolume()" type="button">音量 0.25</button>
+                    </div> -->
+                    <div class="w3-padding w3-xxlarge">
+                        <div class="volControl" onclick="setVolumeLow()">
+                            <i class="fa-solid fa-caret-left fa-2xl"></i>－
+                        </div>
+                        <span id="vol"></span>
+                        <div class="volControl" onclick="setVolumeHigh()">
+                            ＋<i class="fa-solid fa-caret-right fa-2xl"></i>
+                        </div>
+                    </div>
+                    <div class="vid">
+                        <video id="videoPlayer" height="180px" controls></video>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="contentDown">
+            <div class="left_JY901">
+                <div class="button_JY901">
+                    <div class="button_btConnect">
+                        <div class="w3-padding w3-large">
+                            <i class="fa-brands fa-bluetooth"></i>
+                            感測器
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="scanJY901">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    
+                    <br>
+                    <div>
+                        <button class="button w3-padding w3-large" id="startJY901">開始畫</button>
+                        <button class="button w3-padding w3-large" id="stopPlotedJY901">暫停畫</button>
+                    </div>
+                </div>
+
+                <div class="dataJY901">
+                    <!-- <span id="displayState_JY901">等待配對， </span><br> -->
+                    <p id="dataJY901">
+                        感測器尚未被連接。
+                        <!-- dataX：<span id="dataX"></span><br>
+                        dataZ：<span id="dataZ"></span><br> -->
+                    </p>
+
+                    <div>
+                        <form id="dataForm" action="/" method="post">
+                            <label for="hertz_val" style="font-size: large; font-weight: bold;">測聽頻率：</label><br>
+                            <select name="hertz_val" id="hertz_val">
+                                <option value="none">請選擇頻率</option>
+                                <option value="500Hz">500Hz</option>
+                                <option value="2000Hz">2000Hz</option>
+                            </select>
+                            <br>
+                            <label for="ear_side" style="font-size: large; font-weight: bold;">遮蔽耳：</label><br>
+                            <select name="ear_side" id="ear_side">
+                                <option value="RL">無遮蔽</option>
+                                <option value="xR">右耳</option>
+                                <option value="xL">左耳</option>
+                                <option value="xRL">雙耳</option>
+                            </select>
+                            <br>
+                            <label for="db_user" style="font-size: large; font-weight:bold;">受測者資料庫：</label><br>
+                            <select name="db_user" id="db_user">
+                                <option value="none" selected>請選擇資料庫</option>
+                            </select>
+                            <br>
+                            <label for="dateInput" style="font-size: large; font-weight: bold;">受測日期：</label><br>
+                            <input type="date" id="dateInput" min="2024-01-01" max="2024-12-31">
+                            <br><br>
+                            <input id="submit" type="submit" value="儲存資料" disabled>
+                        </form>
+                    </div>
+
+
+                    <br><br>
+                    <a href="{{ url_for('searchDataPage') }}">調閱資料頁</a>
+                </div>
+
+            </div>
+            <div class="right_JY901">
+                <button class="button" id="cleanJY901">清除畫布</button>
+                <div id="plotJY901" style="height: 400px;"></div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <script src="https://kit.fontawesome.com/66d48061b3.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <script src="../static/logScript.js"></script>
+    <script src="../static/script.js"></script>
+    <script src="../static/saveDataScript.js"></script>
+</body>
+
+</html>

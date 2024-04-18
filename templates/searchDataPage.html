@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--引入jQuery包用于使用ajax-->
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <title>實驗用網頁_調資料</title>
+    <!-- w3 的樣式 -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <!-- google fonts 字型套用連結 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- 防止 error : GET http://127.0.0.1:5502/favicon.ico 404 (Not Found) 
+        FROM: favicon.ico:1 -->
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+
+<body>
+    <div class="title ">
+        <h1>調閱受試者資料介面</h1>
+    </div>
+
+    <div class="contentSearch">
+        <div class="left_JY901">
+            <a href="/">回首頁</a>
+            <br><br>
+            <div>
+                <form id="getForm" action="/" method="post">
+                    <label for="db_user2" style="font-size: large; font-weight:bold;">受測者資料庫：</label><br>
+                    <select name="db_user2" id="db_user2">
+                        <option value="none" selected>請選擇資料庫</option>
+                    </select>
+                    <br>
+                    <label for="tableSelect" style="font-size: large; font-weight:bold;">受測者資料表：</label><br>
+                    <select name="tableSelect" id="tableSelect">
+                        <option value="none" selected>請選擇資料表</option>
+                    </select>
+                    <br><br>
+                    <input type="submit" value="抓取資料">
+                </form>
+            </div>
+            <br><br>
+            <div class="displayData">
+                測聽頻率：<span id="hertz">...</span>
+                <br>
+                遮蔽耳：<span id="coverSide">...</span>
+                <br>
+                正確率：<span id="correctRate">...</span>%
+                <br>
+                平均反應時間：<span id="reactionTime">...</span>秒
+            </div>
+
+        </div>
+
+        <div class="right_JY901">
+            <p class="p_status">訊號作圖</p>
+            <div id="plotJY901" style="height: 520px; width: 1000px;"></div>
+            <div>
+                <p class="p_status">資料分析</p>
+                <div id="dataContainer" style="height: 160px; overflow: auto;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="content" style="display: none;">
+        <div class="left_JY901 w3-padding" id="detailsContainer"></div>
+        <div class="right_JY901">
+            <!-- <p class="p_status">資料顯示</p>
+            <div id="dataContainer"></div> -->
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <script src="../static/searchDataScript.js"></script>
+</body>
+
+</html>
